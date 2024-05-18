@@ -40,6 +40,35 @@
     #startGameButton:hover {
       background-color: #555;
     }
+    .pauseMenu {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      color: #FFF;
+      z-index: 1;
+    }
+    .pauseMenu button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #333;
+      color: #FFF;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .pauseMenu button:hover {
+      background-color: #555;
+    }
   </style>
 </head>
 <body>
@@ -161,6 +190,58 @@
       update();
       
       // Play main menu music
+      mainMenuMusic.play();
+    }
+
+    // Function to open the pause menu
+    function openPauseMenu() {
+      if (!gamePaused) {
+        gamePaused = true;
+        document.getElementById('pauseMenu').style.display = 'flex';
+        document.addEventListener('keydown', handlePauseMenuKeys);
+      }
+    }
+
+    // Function to close the pause menu and resume the game
+    function resumeGame() {
+      if (gamePaused) {
+        gamePaused = false;
+        document.getElementById('pauseMenu').style.display = 'none';
+        document.removeEventListener('keydown', handlePauseMenuKeys);
+        update();
+      }
+    }
+
+    // Function to handle keyboard input in the pause menu
+    function handlePauseMenuKeys(event) {
+      if (event.key === 'Escape') {
+        resumeGame();
+      }
+    }
+
+    // Function to open the settings menu
+    function openSettings() {
+      document.getElementById('pauseMenu').style.display = 'none';
+      document.getElementById('settingsMenu').style.display = 'flex';
+    }
+
+    // Function to return to the pause menu from the settings menu
+    function returnToPauseMenu() {
+      document.getElementById('settingsMenu').style.display = 'none';
+      document.getElementById('pauseMenu').style.display = 'flex';
+    }
+
+    // Function to return to the main menu from the pause menu
+    function returnToMainMenu() {
+      gameStarted = false;
+      gamePaused = false;
+      document.getElementById('pauseMenu').style.display = 'none';
+      document.getElementById('settingsMenu').style.display = 'none';
+      document.getElementById('gameCanvas').style.display = 'none';
+      document.getElementById('mainMenu').style.display = 'flex';
+      
+      // Stop in-game music and play main menu music
+      inGameMusic.pause();
       mainMenuMusic.play();
     }
 
