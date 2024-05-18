@@ -9,30 +9,44 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-    }
-    canvas {
-      display: block;
+      font-family: 'Arial', sans-serif;
       background-color: #000;
-      margin: auto;
+      color: #FFF;
     }
-    .pauseMenu {
+    #mainMenu {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
+    }
+    #mainMenu h1 {
+      font-size: 48px;
+      font-family: 'Roboto', sans-serif;
+    }
+    #startGameButton {
+      padding: 10px 20px;
+      font-size: 24px;
+      background-color: #333;
       color: #FFF;
-      z-index: 1;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #startGameButton:hover {
+      background-color: #555;
     }
   </style>
 </head>
 <body>
   <!-- Main Menu -->
-  <div id="mainMenu" style="display: block; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-    <h1>Welcome to Epic Quest: Undertale Edition</h1>
-    <button onclick="startGame()">Start Game</button>
+  <div id="mainMenu">
+    <h1>Welcome to <span style="color: #FFD700;">Epic Quest: Undertale Edition</span></h1>
+    <button id="startGameButton" onclick="startGame()">Start Game</button>
   </div>
 
   <!-- Game Canvas -->
@@ -199,11 +213,13 @@
     // Play main menu music
     const mainMenuMusic = new Audio('mainmenu.mp3');
     mainMenuMusic.loop = true;
+    mainMenuMusic.volume = 0.5;
     mainMenuMusic.play();
 
     // Play in-game music
     const inGameMusic = new Audio('track1.mp3');
     inGameMusic.loop = true;
+    inGameMusic.volume = 0.5;
 
   </script>
 </body>
