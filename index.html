@@ -24,9 +24,31 @@
     // Define game variables
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const tileSize = 40; // Size of each tile in the map
     let playerX = canvas.width / 2;
     let playerY = canvas.height / 2;
     const playerSize = 30;
+
+    // Define game map
+    const map = [
+      [1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1],
+      [1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 1],
+      [1, 1, 1, 1, 1]
+    ];
+
+    // Function to draw the map
+    function drawMap() {
+      for (let y = 0; y < map.length; y++) {
+        for (let x = 0; x < map[y].length; x++) {
+          if (map[y][x] === 1) {
+            ctx.fillStyle = '#999'; // Gray color for walls
+            ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+          }
+        }
+      }
+    }
 
     // Function to draw the player
     function drawPlayer() {
@@ -42,6 +64,7 @@
     // Function to update the game state
     function update() {
       clearCanvas();
+      drawMap();
       drawPlayer();
     }
 
@@ -50,16 +73,24 @@
       const speed = 5; // Adjust the player speed as needed
       switch (event.key) {
         case 'ArrowUp':
-          playerY -= speed;
+          if (map[Math.floor((playerY - speed) / tileSize)][Math.floor(playerX / tileSize)] === 0) {
+            playerY -= speed;
+          }
           break;
         case 'ArrowDown':
-          playerY += speed;
+          if (map[Math.floor((playerY + speed + playerSize) / tileSize)][Math.floor(playerX / tileSize)] === 0) {
+            playerY += speed;
+          }
           break;
         case 'ArrowLeft':
-          playerX -= speed;
+          if (map[Math.floor(playerY / tileSize)][Math.floor((playerX - speed) / tileSize)] === 0) {
+            playerX -= speed;
+          }
           break;
         case 'ArrowRight':
-          playerX += speed;
+          if (map[Math.floor(playerY / tileSize)][Math.floor((playerX + speed + playerSize) / tileSize)] === 0) {
+            playerX += speed;
+          }
           break;
       }
       update();
