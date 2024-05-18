@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adventure Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #game-container {
+      width: 90%;
+      max-width: 600px;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #output {
+      min-height: 200px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 10px;
+      overflow-y: auto;
+    }
+
+    #input-container {
+      display: flex;
+    }
+
+    #input-text {
+      flex-grow: 1;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    #input-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Adventure Game</h1>
+    <div id="output">Welcome to the Adventure Game! Enter your name to start.</div>
+    <div id="input-container">
+      <input type="text" id="input-text" placeholder="Enter your choice...">
+      <button id="input-button">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const output = document.getElementById('output');
+      const inputText = document.getElementById('input-text');
+      const inputButton = document.getElementById('input-button');
+
+      let playerName = '';
+      let gameRunning = false;
+
+      const game = {
+        start: function() {
+          gameRunning = true;
+          output.innerHTML = 'Welcome, ' + playerName + '!<br>';
+          output.innerHTML += 'You are in a mysterious land. What would you like to do?<br>';
+          output.innerHTML += 'Type "explore" to begin exploring.<br>';
+          inputText.focus();
+        },
+
+        explore: function() {
+          const options = ['fight', 'run', 'rest'];
+          const action = options[Math.floor(Math.random() * options.length)];
+          switch (action) {
+            case 'fight':
+              output.innerHTML += 'You encountered a monster! You fought bravely and defeated it!<br>';
+              break;
+            case 'run':
+              output.innerHTML += 'You encountered a monster! You ran away quickly!<br>';
+              break;
+            case 'rest':
+              output.innerHTML += 'You found a safe spot and rested for a while.<br>';
+              break;
+          }
+          output.innerHTML += 'What would you like to do next?<br>';
+          inputText.focus();
+        },
+
+        handleInput: function(input) {
+          if (!gameRunning) {
+            playerName = input;
+            game.start();
+            return;
+          }
+          input = input.trim().toLowerCase();
+          if (input === 'explore') {
+            game.explore();
+          } else {
+            output.innerHTML += 'Invalid input. Type "explore" to continue.<br>';
+            inputText.focus();
+          }
+        }
+      };
+
+      inputButton.addEventListener('click', function() {
+        const userInput = inputText.value.trim();
+        if (userInput !== '') {
+          game.handleInput(userInput);
+          inputText.value = '';
+        }
+      });
+
+      inputText.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          inputButton.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
