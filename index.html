@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      font-family: 'Arial', sans-serif;
+      font-family: 'Determination Extended', sans-serif;
       background-color: #000;
       color: #FFF;
     }
@@ -25,7 +25,7 @@
     }
     #mainMenu h1 {
       font-size: 48px;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Determination Extended', sans-serif;
     }
     #startGameButton {
       padding: 10px 20px;
@@ -67,6 +67,11 @@
     <input type="range" min="0" max="100" value="50" id="mainMenuVolumeSlider">
     <label>Main Game Music Volume:</label>
     <input type="range" min="0" max="100" value="50" id="gameMusicVolumeSlider">
+    <p>Controls:</p>
+    <ul>
+      <li>Arrow keys or WASD to move</li>
+      <li>Esc to pause</li>
+    </ul>
     <button onclick="returnToPauseMenu()">Back</button>
   </div>
 
@@ -126,15 +131,19 @@
       const speed = 5; // Adjust the player speed as needed
       switch (event.key) {
         case 'ArrowUp':
+        case 'w':
           playerY -= speed;
           break;
         case 'ArrowDown':
+        case 's':
           playerY += speed;
           break;
         case 'ArrowLeft':
+        case 'a':
           playerX -= speed;
           break;
         case 'ArrowRight':
+        case 'd':
           playerX += speed;
           break;
         case 'Escape':
@@ -151,59 +160,7 @@
       document.getElementById('gameCanvas').style.display = 'block';
       update();
       
-      // Stop main menu music and play in-game music
-      mainMenuMusic.pause();
-      inGameMusic.play();
-    }
-
-    // Function to open the pause menu
-    function openPauseMenu() {
-      if (!gamePaused) {
-        gamePaused = true;
-        document.getElementById('pauseMenu').style.display = 'block';
-        document.addEventListener('keydown', handlePauseMenuKeys);
-      }
-    }
-
-    // Function to close the pause menu and resume the game
-    function resumeGame() {
-      if (gamePaused) {
-        gamePaused = false;
-        document.getElementById('pauseMenu').style.display = 'none';
-        document.removeEventListener('keydown', handlePauseMenuKeys);
-      }
-    }
-
-    // Function to handle keys in the pause menu
-    function handlePauseMenuKeys(event) {
-      if (event.key === 'Escape') {
-        resumeGame();
-      }
-    }
-
-    // Function to open the settings menu
-    function openSettings() {
-      document.getElementById('pauseMenu').style.display = 'none';
-      document.getElementById('settingsMenu').style.display = 'block';
-    }
-
-    // Function to return to the pause menu from the settings menu
-    function returnToPauseMenu() {
-      document.getElementById('settingsMenu').style.display = 'none';
-      document.getElementById('pauseMenu').style.display = 'block';
-    }
-
-    // Function to return to the main menu from the pause menu
-    function returnToMainMenu() {
-      gameStarted = false;
-      gamePaused = false;
-      document.getElementById('pauseMenu').style.display = 'none';
-      document.getElementById('settingsMenu').style.display = 'none';
-      document.getElementById('gameCanvas').style.display = 'none';
-      document.getElementById('mainMenu').style.display = 'block';
-      
-      // Stop in-game music and play main menu music
-      inGameMusic.pause();
+      // Play main menu music
       mainMenuMusic.play();
     }
 
@@ -214,13 +171,20 @@
     const mainMenuMusic = new Audio('mainmenu.mp3');
     mainMenuMusic.loop = true;
     mainMenuMusic.volume = 0.5;
-    mainMenuMusic.play();
 
-    // Play in-game music
-    const inGameMusic = new Audio('track1.mp3');
-    inGameMusic.loop = true;
-    inGameMusic.volume = 0.5;
+  </script>
+  <script>
+    // Volume Controls
+    const mainMenuVolumeSlider = document.getElementById('mainMenuVolumeSlider');
+    const gameMusicVolumeSlider = document.getElementById('gameMusicVolumeSlider');
 
+    mainMenuVolumeSlider.addEventListener('input', function() {
+      mainMenuMusic.volume = this.value / 100;
+    });
+
+    gameMusicVolumeSlider.addEventListener('input', function() {
+      inGameMusic.volume = this.value / 100;
+    });
   </script>
 </body>
 </html>
