@@ -18,7 +18,14 @@
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <!-- Main Menu -->
+  <div id="mainMenu" style="display: block; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <h1>Welcome to Epic Quest: Undertale Edition</h1>
+    <button onclick="startGame()">Start Game</button>
+  </div>
+
+  <!-- Game Canvas -->
+  <canvas id="gameCanvas" width="800" height="600" style="display: none;"></canvas>
 
   <script>
     // Define game variables
@@ -28,6 +35,7 @@
     let playerX = canvas.width / 2;
     let playerY = canvas.height / 2;
     const playerSize = 30;
+    let gameStarted = false;
 
     // Define game map
     const map = [
@@ -70,37 +78,65 @@
 
     // Function to handle keyboard input
     function handleKeyDown(event) {
+      if (!gameStarted) return;
       const speed = 5; // Adjust the player speed as needed
       switch (event.key) {
         case 'ArrowUp':
-          if (map[Math.floor((playerY - speed) / tileSize)][Math.floor(playerX / tileSize)] === 0) {
-            playerY -= speed;
-          }
+          playerY -= speed;
           break;
         case 'ArrowDown':
-          if (map[Math.floor((playerY + speed + playerSize) / tileSize)][Math.floor(playerX / tileSize)] === 0) {
-            playerY += speed;
-          }
+          playerY += speed;
           break;
         case 'ArrowLeft':
-          if (map[Math.floor(playerY / tileSize)][Math.floor((playerX - speed) / tileSize)] === 0) {
-            playerX -= speed;
-          }
+          playerX -= speed;
           break;
         case 'ArrowRight':
-          if (map[Math.floor(playerY / tileSize)][Math.floor((playerX + speed + playerSize) / tileSize)] === 0) {
-            playerX += speed;
-          }
+          playerX += speed;
+          break;
+        case 'ArrowUp': // Up
+          playerY -= speed;
+          break;
+        case 'ArrowDown': // Down
+          playerY += speed;
+          break;
+        case 'ArrowLeft': // Left
+          playerX -= speed;
+          break;
+        case 'ArrowRight': // Right
+          playerX += speed;
+          break;
+        case 'ArrowUp': // Up-Left
+          playerX -= speed;
+          playerY -= speed;
+          break;
+        case 'ArrowUp': // Up-Right
+          playerX += speed;
+          playerY -= speed;
+          break;
+        case 'ArrowDown': // Down-Left
+          playerX -= speed;
+          playerY += speed;
+          break;
+        case 'ArrowDown': // Down-Right
+          playerX += speed;
+          playerY += speed;
           break;
       }
+      update();
+    }
+
+    // Function to start the game
+    function startGame() {
+      gameStarted = true;
+      document.getElementById('mainMenu').style.display = 'none';
+      document.getElementById('gameCanvas').style.display = 'block';
       update();
     }
 
     // Add event listener for keyboard input
     window.addEventListener('keydown', handleKeyDown);
 
-    // Initial game setup
-    update();
-  </script>
-</body>
-</html>
+    // Play main menu music
+    const mainMenuMusic = new Audio('mainmenu.mp3');
+    mainMenuMusic.loop = true;
+  
